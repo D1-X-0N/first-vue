@@ -3,15 +3,24 @@
 <head>
   <title>eShop</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/8adfa40078.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <header>
-    <button class="cart-button" type="button">Корзина</button>
+    <menu class="menu">
+      <div class="cart">
+        <button class="cart-button" type="button">Корзина</button>
+        <div class="cart-list"></div>
+      </div>
+    <form action="#" class="search-form">
+      <button type="button" class="search-button">Поиск</button>
+      <input type="text" class="item-search">
+    </form>
+    </menu>
   </header>
   <main>
-    
-    <div class="goods-list"></div>
 
+    <div class="goods-list"></div> 
   </main>
   
   <script src="script.js"></script>
