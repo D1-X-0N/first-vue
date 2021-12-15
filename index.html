@@ -10,32 +10,12 @@
   <div id="app">
     <header>
       <menu class="menu">
-        <div class="cart">
-          <button class="cart-button" type="button" @click="checkCart">Корзина</button>
-          <div class="cart-list" v-if="visibleCart">
-            <div class="cart-item" v-for="item of cartItems" v-bind:key="item.id_product">
-              <h3>{{item.product_name}}</h3>
-              <p>{{item.price}}</p>
-              <div class="cart-delete fas fa-times" v-on:click="removeItemCartList(item)"></div>
-              </div>
-            <div class="cart-sum">total amount: ${{getPrice()}}</div>  
-          </div>
-        </div>
-      <form action="#" class="search-form">
-        <button type="button" class="search-button" @click="filter">Поиск</button>
-        <input type="text" class="item-search" @input="filter" v-model="searchLine">
-      </form>
+        <cart-list :cart-items="cartItems"></cart-list>
+        <filter-form v-on:filter="filter"></filter-form>
       </menu>
     </header>
     <main>
-      <div class="goods-list">
-        <div class="goods-item"  v-if="filtered.length == 0">Нет данных</div>
-        <div class="goods-item" v-for="good of filtered" v-bind:key="good.id_product" v-on:click="addItemCartList(good)">
-          <h3 >{{good.product_name}}</h3>
-          <p>${{good.price}}</p>
-        </div>
-
-      </div> 
+      <goods-list :filtered="filtered" v-on:add="addItemCartList"></goods-list>
     </main>   
   </div>
   
