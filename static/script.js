@@ -1,7 +1,6 @@
 "use strict";
 
-const API_URL = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses/';
-
+const API_URL = 'http://127.0.0.1:3000/';
 
 Vue.component("goods-list", {
   props:["filtered"],
@@ -10,11 +9,17 @@ Vue.component("goods-list", {
                 <h3 >{{good.product_name}}</h3>
                 <p>\${{good.price}}</p>
               </div>
-              <div class="goods-item"  v-if="filtered.length == 0">no data available</div>
+              <div class="goods-item no-data"  v-if="filtered.length == 0">no data available</div>
              </div> `,
   methods: {
     addItemCartList(good) {
-      fetch(`${API_URL}addToBasket.json`)
+      fetch(`${API_URL}addToCart`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/JSON'
+        },
+        body: JSON.stringify(good)
+      })
         .then(() => {
           this.$emit('add', good)
         })      
@@ -33,8 +38,8 @@ Vue.component("cart-list", {
               <button class="cart-button" type="button" @click="checkCart">Cart</button>
               <div class="cart-list" v-if="visibleCart">
                 <div class="cart-item" v-for="item of cartItems" :key="item.id_product">
-                  <h3>{{item.product_name}}</h3>
-                  <p>{{item.price}}</p>
+                  <h3 class="cart-item-title">{{item.product_name}}</h3>
+                  <p class="cart-item-price">{{item.price}}</p>
                   <div class="cart-delete fas fa-times" v-on:click="removeItemCartList(item)"></div>
                 </div>
                 <div class="cart-sum">total amount: \${{getPrice()}}</div>  
@@ -45,7 +50,13 @@ Vue.component("cart-list", {
       this.visibleCart = !this.visibleCart;
      },
     removeItemCartList(item) {
-      fetch(`${API_URL}deleteFromBasket.json`)
+      fetch(`${API_URL}removeFromCart`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/JSON'
+        },
+        body: JSON.stringify(item)
+      })
       .then(() => {
         const delItem = this.cartItems.findIndex((goodItem) => goodItem.id_product == item.id_product);
         this.cartItems.splice(delItem, 1);
@@ -79,7 +90,7 @@ const app = new Vue({
   data: {
     goods: [],
     filtered: [],
-    cartItems: [],
+    cartItems: []
   },
   methods: {
    filter(src) {
@@ -92,10 +103,10 @@ const app = new Vue({
       this.filtered = this.goods.filter((good) => reg.test(good.product_name));
    },
    addItemCartList(good) {
-    this.cartItems.push(good)          
+      this.cartItems.push(good);
    },
    fetchGoods() {
-    fetch(`${API_URL}catalogData.json`)
+    fetch(`${API_URL}catalogData`)
     .then((response) => response.json())
     .then((request) => {
       this.goods = request;
@@ -106,10 +117,10 @@ const app = new Vue({
   })
    },
    fetchItem()  {
-    fetch(`${API_URL}getBasket.json`)
+    fetch(`${API_URL}cart`)
       .then((response) => response.json())
       .then((request) => {
-        this.cartItems = request.contents;
+        this.cartItems = request;
       })
       .catch((err) => { 
       console.error(err.text)
