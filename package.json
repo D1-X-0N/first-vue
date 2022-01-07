@@ -1,0 +1,22 @@
+{
+  "name": "vue-node-check",
+  "version": "1.0.0",
+  "description": "lessons-1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/D1-X-0N/first-vue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/D1-X-0N/first-vue/issues"
+  },
+  "homepage": "https://github.com/D1-X-0N/first-vue#readme",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
